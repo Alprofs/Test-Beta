@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Analytical Master</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2196F3">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Cairo:wght@400;600;700;800;900&family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header class="app-header">
+        <div class="header-left">
+            <button id="menu-btn" class="icon-btn" onclick="UI.openSidebar()" title="Menu">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <button id="back-btn" class="icon-btn hidden" title="Back">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+        </div>
+        <div id="app-title">Analytical Master</div>
+        <div style="width: 38px;"></div>
+    </header>
+
+    <div id="app-container"></div>
+    <footer class="developer-credit" id="app-footer">
+        <div>This website was created by</div>
+        <a href="javascript:void(0)" onclick="App.openTelegramDev()" class="dev-name">
+            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+            </svg>
+            𝓐𝓱𝓶𝓮𝓭 𝓜𝓸𝓼𝓽𝓪𝓯𝓪
+        </a>
+    </footer>
+
+    <<button id="floating-translate-btn" class="floating-btn hidden" onclick="UI.toggleTranslation()">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <span id="translate-text">English / عربي</span>
+        </button>
+        <div id="welcome-overlay" class="overlay">
+            <div class="dialog welcome-dialog">
+                <div class="welcome-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="46" height="46">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+                    </svg>
+                </div>
+                <h2 style="color: var(--secondary-blue-dark); margin-bottom: 12px; font-family: 'Cairo', sans-serif;">مرحباً بك يا دكتور</h2>
+                <p style="font-size: 15px; color: var(--text-main); margin-bottom: 18px; line-height: 1.7; direction: rtl; font-family: 'Cairo', sans-serif;">
+                    الكيمياء التحليلية ليست مجرد معادلات وحسابات، بل هي مفتاحك لفهم تركيب الدواء وضمان دقته وسلامته.
+                    <br><br>
+                    <strong>نصيحة للمذاكرة:</strong> افهم الفكرة وراء المعايرة قبل حفظ القوانين، وتدرب على حل المسائل بيدك خطوة بخطوة.
+                    <br><br>
+                    <span style="color: var(--primary-green-dark); font-weight: 700;">نسأل الله لك ولزملائك دوام التوفيق والتميز!</span>
+                </p>
+                <button class="btn-main" style="width: 100%; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="UI.closeWelcomeModal()">
+                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    ابدأ المذاكرة الآن
+                </button>
+            </div>
+        </div>
+
+        <div id="win-overlay" class="overlay">
+            <div class="dialog">
+                <h1 style="color: var(--btn-green); font-size: 38px; margin: 0 0 15px 0;">Excellent! 🎉</h1>
+                <p style="font-size: 18px; font-weight: 800; color: #333; margin-bottom: 30px;">You have successfully answered all questions.</p>
+                <button class="btn-main" style="width: 100%; box-shadow: 0 6px 0 var(--btn-green-dark);" onclick="App.completeLecture()">Go Home</button>
+            </div>
+        </div>
+
+        <div id="quiz-settings-overlay" class="overlay">
+            <div class="dialog">
+                <h2 style="color: var(--secondary-blue-dark); margin-bottom: 20px; font-family: 'Cairo', sans-serif;">إعدادات الاختبار ⚙️</h2>
+
+                <div class="settings-group" style="text-align: right; direction: rtl; margin-bottom: 25px;">
+
+                    <div class="switch-item" style="margin-bottom: 15px;">
+                        <div class="switch-info">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                                <polyline points="16 3 21 3 21 8"></polyline>
+                                <line x1="4" y1="20" x2="21" y2="3"></line>
+                                <polyline points="21 16 21 21 16 21"></polyline>
+                                <line x1="15" y1="15" x2="21" y2="21"></line>
+                                <line x1="4" y1="4" x2="9" y2="9"></line>
+                            </svg>
+                            <span style="font-weight: 700; font-size: 15px;">ترتيب الأسئلة عشوائياً</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="setting-shuffle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="switch-item" style="margin-bottom: 15px;">
+                        <div class="switch-info">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                                <polyline points="1 4 1 10 7 10"></polyline>
+                                <polyline points="23 20 23 14 17 14"></polyline>
+                                <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                            </svg>
+                            <span style="font-weight: 700; font-size: 15px;">إعادة الأسئلة الخاطئة</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="setting-retry" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="switch-item">
+                        <div class="switch-info">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            <span style="font-weight: 700; font-size: 15px;">الوقت لكل سؤال</span>
+                        </div>
+                        <select id="setting-timer" style="padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border-grey); font-family: 'Cairo'; font-weight: 700; background: var(--bg-grey); color: var(--text-main); outline: none;">
+                            <option value="0">بدون وقت</option>
+                            <option value="15">15 ثانية</option>
+                            <option value="30">30 ثانية</option>
+                            <option value="60">60 ثانية</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <button class="btn-main" style="width: 100%; margin-bottom: 10px;" onclick="QuizController.applySettingsAndStart()">🚀 ابدأ الاختبار</button>
+                <button class="btn-main" style="width: 100%; background: #fef2f2 !important; color: #ef4444 !important; box-shadow: 0 6px 0 #fecaca !important;" onclick="document.getElementById('quiz-settings-overlay').style.display='none'">إلغاء</button>
+            </div>
+        </div>
+
+        <div id="sidebar-overlay" class="overlay" style="justify-content: flex-start;" onclick="UI.closeSidebar(event)">
+            <div id="sidebar" class="sidebar-container" onclick="event.stopPropagation()">
+                <div class="sidebar-header">
+                    <h3>الإعدادات</h3>
+                    <span class="close-sidebar" onclick="UI.closeSidebar()">✕</span>
+                </div>
+                <div class="sidebar-content">
+                    <div class="sidebar-item switch-item">
+                        <div class="switch-info">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                            </svg>
+                            <span>الوضع الداكن</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="dark-mode-toggle" onchange="UI.handleThemeToggle(this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="sidebar-divider"></div>
+
+                    <a href="javascript:void(0)" onclick="App.openLink('bot')" class="sidebar-item resource-link">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="#12D11E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="16" height="12" x="4" y="8" rx="2" />
+                            <path d="M2 14h2" />
+                            <path d="M20 14h2" />
+                            <path d="M15 13v2" />
+                            <path d="M9 13v2" />
+                            <path d="M12 8V4H8" />
+                        </svg>
+                        بوت التسجيلات (Telegram)
+                    </a>
+
+                    <a href="javascript:void(0)" onclick="App.openLink('drive')" class="sidebar-item resource-link">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="#0284c7" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        مجلد المحاضرات (Drive)
+                    </a>
+                    <div class="sidebar-divider"></div>
+
+                    <button class="sidebar-item" onclick="UI.showPrivacy()">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                        سياسة الخصوصية
+                    </button>
+
+                    <div class="sidebar-divider"></div>
+
+                    <button class="sidebar-item" style="color: #dc2626; background: #fef2f2; border-color: #fecaca;" onclick="App.resetProgress()">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        تفريغ التقدم وإعادة البدء
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="privacy-overlay" class="overlay">
+            <div class="dialog">
+                <h2 style="color: var(--secondary-blue-dark); margin-bottom: 15px; font-family: 'Cairo', sans-serif;">سياسة الخصوصية</h2>
+                <p style="font-size: 16px; line-height: 1.6; direction: rtl; margin-bottom: 20px; color: var(--text-main); font-family: 'Cairo', sans-serif;">
+                    نحن لا نجمع أي بيانات عنك.. لأنك طالب صيدلة، كل بياناتك عبارة عن درجات كويزات ومحاضرات، ومحدش مهتم يسرقها بصراحة 😂.
+                    <br><br>
+                    بيانات تقدمك تُحفظ في متصفحك أنت فقط (Local Storage).
+                </p>
+                <button class="btn-main" style="width: 100%; box-shadow: 0 6px 0 var(--btn-green-dark);" onclick="document.getElementById('privacy-overlay').style.display='none'">فهمت، شكراً</button>
+            </div>
+        </div>
+
+        <script src="js/data.js"></script>
+        <script src="js/lectures/lec1.js"></script>
+
+        <script src="js/ui.js"></script>
+        <script src="js/quiz.js"></script>
+        <script src="js/app.js"></script>
+        <div id="toast-container" class="toast-container"></div>
+</body>
+
+</html>
